@@ -1,0 +1,15 @@
+﻿@model Booking
+@{
+    ViewData["Title"] = "Booking Process";
+}
+
+<h2 class="text-lg-center">Booking Confirmation</h2>
+
+
+
+        &nbsp;
+
+        <a asp-controller="Hotels" asp-action="BookingConfirmed" asp-route-id="@Model.HotelId" class="btn btn-outline-warning">Confirm</a>
+        &nbsp;
+        <a asp-controller="Hotels" asp-action="Index" class="btn btn-danger">Go back to the Hotels</a>
+    

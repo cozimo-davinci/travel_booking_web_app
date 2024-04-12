@@ -1,0 +1,81 @@
+﻿﻿
+<link rel="stylesheet" href="~/css/CarIndex.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap">
+
+@model IEnumerable<Cars>
+@{
+    ViewData["Title"] = "Car Rental";
+    bool searchPerformed = ViewData["SearchPerformed"] as bool? ?? false;
+    string searchString = ViewData["SearchString"] as string;
+}
+
+@if (TempData["Notification"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Notification"]
+    </div>
+}
+
+<div class="container mt-4">
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <h2>Car Rental</h2>
+            <form class="d-flex" asp-action="Search" method="get">
+                <input class="form-control" type="search" placeholder="Search" name="searchString" value="@searchString" />
+                <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-brain"></i> Search</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img class="card-img-top" src="@Url.Content(car.ImagePath)" alt="@car.Model" style="object-fit: cover; height: 225px;">
+                    <div class="card-body text-left">
+                        <p class="card-text"><strong><i class="fa-solid fa-car"></i> Model:</strong> @car.Model</p>
+                        <p class="card-text"><strong><i class="fa-solid fa-building"></i> Rental Company:</strong> @car.RentalCompany</p>
+                        <p class="card-text"><strong><i class="fa-solid fa-money-bill"></i> Price:</strong> @car.Price</p>
+                        <p class="card-text"><strong><i class="fa-solid fa-calendar-days"></i> Available From:</strong> @car.AvailabilityStartDate.ToShortDateString()</p>
+                        <p class="card-text"><strong><i class="fa-solid fa-calendar-days"></i> Availability To:</strong> @car.AvailabilityEndDate.ToShortDateString()</p>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="btn-group">
+                                <a asp-controller="Cart" asp-action="AddRentalToCart" asp-route-id="@car.CarId" class="btn btn-info me-1">Book</a>
+                                <a asp-action="Details" asp-route-id="@car.CarId" class="btn btn-info me-1">Details</a>
+                                <a asp-action="Edit" asp-route-id="@car.CarId" class="btn btn-outline-warning me-1">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@car.CarId" class="btn btn-outline-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @if (!Model.Any())
+            {
+                if (searchPerformed)
+                {
+                    <div class="alert alert-warning" role="alert">
+                        No Car Rental with name "@searchString".
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning" role="alert">
+                        No Car Rental Available.
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a asp-action="Create" class="btn btn-outline-primary" id="createButton">Add a Car Rental</a>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,36 @@
+﻿<link rel="stylesheet" href="~/css/AboutUs.css" />
+@{
+    ViewData["Title"] = "About Us";
+
+    var students = new[]
+    {
+        new { Name = "Teimur Terchyyev", StudentID = 101412670, Course = "COMP2139" },
+        new { Name = "Oleg Chystieiev", StudentID = 101447469, Course = "COMP2139" },
+        new { Name = "Mo Harry Bandukda", StudentID = 101451857, Course = "COMP2139" }
+    };
+}
+
+<head>
+    <title class="text-lg-center">Welcome to About Page</title>
+    
+</head>
+
+<body>
+    <h1 class="text-md-center">Personal Information</h1>
+    <div class="container">
+    @foreach (var student in students)
+    {
+        <div class="card">
+            <p>Name: @student.Name</p>
+            <p>Student ID: @student.StudentID</p>
+            <p>Course Code: @student.Course</p>
+        </div>
+    }
+    </div>
+</body>
+
+
+
+<a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark" id="btn">Back to Home Page</a>
+
+

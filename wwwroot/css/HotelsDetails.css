@@ -1,0 +1,17 @@
+﻿body {
+}
+
+.hover-effect {
+    transition: all 0.3s ease;
+}
+
+.hover-effect:hover {
+        transform: scale(1.1);
+        background-color: wheat;
+        color: darkslategray;
+    }
+#title-text{
+    font: bold 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: darkslateblue;
+}

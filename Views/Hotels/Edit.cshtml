@@ -1,0 +1,114 @@
+﻿@model Hotels
+@{
+    ViewData["Title"] = "Edit Hotel's Listing";
+}
+<h2 class="text-lg-center">Edit Hotel's Listing</h2>
+
+<form asp-controller="Hotels" asp-action="Edit" method="post" enctype="multipart/form-data">
+
+    @Html.HiddenFor(model => model.HotelsId)
+
+    <div class="form_group">
+        <label asp-for="Name" class="control_label">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
+    </div>
+
+    &nbsp;
+
+    <div class="form_group">
+        <label asp-for="Description" class="control_label">Description</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+
+    </div>
+
+    &nbsp;
+
+    <div class="form_group">
+        <label asp-for="Type" class="control_label">Type</label>
+        <select asp-for="Type" class="form-control">
+
+            <option value="">Select Type</option>
+            <option value="5 Star">5 Star</option>
+            <option value="4 Star">4 Star</option>
+            <option value="3 Star">3 Star</option>
+            <option value="2 Star">2 Star</option>
+            <option value="1 Star">1 Star</option>
+
+        </select>
+    </div>
+
+    &nbsp;
+
+    <div class="form_group">
+        <label asp-for="Address" class="control_label">Address</label>
+        <input asp-for="Address" class="form-control" />
+        
+    </div>
+    
+    &nbsp;
+
+    <div class="form_group">
+        <label asp-for="Rating" class="control_label">Rating</label>
+        <select asp-for="Rating" class="form-control">
+
+            <option value="">Select Rating</option>
+            <option value="Sensational">Sensational</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Not Bad">Not Bad</option>
+            <option value="Bad">Bad</option>
+            <option value="Nightmare">Nightmare</option>
+        </select>
+    </div>
+
+    &nbsp;
+
+    <div class="form-group">
+        <label asp-for="Price" class="label-control"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    &nbsp;
+
+    <div class="form-group">
+        <label asp-for="AvailabilityStartDate" class="label-control"></label>
+        <input asp-for="AvailabilityStartDate" class="form-control" />
+    </div>
+
+    &nbsp;
+
+    <div class="form-group">
+        <label asp-for="AvailabilityEndDate" class="label-control"></label>
+        <input asp-for="AvailabilityEndDate" class="form-control" />
+    </div>
+
+    
+    &nbsp;
+
+    <div class="form-group">
+        <label for="file" class="label-control">Upload Image</label>
+        <input type="file" class="form-control" id="file" name="file" accept="image/*" />
+    </div>
+
+    &nbsp;
+
+    <div class="form_group">
+
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-danger">Cancel</a>
+    </div>
+
+</form>
+
+
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,193 @@
+﻿<link rel="stylesheet" href="~/css/HotelsIndex.css" />
+@model Cart
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+@{
+    float hotelSubtotal = 0;
+    float flightSubtotal = 0;
+    float rentalSubtotal = 0;
+}
+@if (TempData["Notification"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Notification"]
+    </div>
+}
+
+
+<h2>Shopping Cart</h2>
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            @if (Model.FlightCarts.Any())
+            {
+                <h4>My Flights</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-barcode"></i> Flight Code</th>
+                            <th><i class="fa-solid fa-jet-fighter-up"></i> Airline</th>
+                            <th><i class="fa-solid fa-plane-departure"></i> Departure</th>
+                            <th><i class="fa-solid fa-plane-arrival"></i> Arrival</th>
+                            <th><i class="fa-solid fa-money-bill"></i> Economy Class Price</th>
+                            <th><i class="fa-solid fa-money-bill"></i> Business Class Price</th>
+                            <th><i class="fa-brands fa-artstation"></i> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var flightCart in Model.FlightCarts)
+                        {
+                            var flight = flightCart.Flight;
+                            <tr>
+                                <td>@flight.FlightCode</td>
+                                <td>@flight.Airline</td>
+                                <td>
+                                    @flight.Origin<br />
+                                    @flight.DepartureTime.ToString("dd MMMM yyyy")<br />
+                                    @flight.DepartureTime.ToString("hh:mm tt")
+                                </td>
+                                <td>
+                                    @flight.Destination<br />
+                                    @flight.ArrivalTime.ToString("dd MMMM yyyy")<br />
+                                    @flight.ArrivalTime.ToString("hh:mm tt")
+                                </td>
+                                <td>$@flight.EconomyPrice.ToString("0.00")</td>
+                                <td>$@flight.BusinessPrice.ToString("0.00")</td>
+                                <td>
+                                    <form method="post" asp-action="RemoveFlightFromCart" asp-route-flightId="@flight.FlightId">
+                                        <button type="submit" class="btn btn-info" onclick="showNotification('Flight removed successfully!')">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            flightSubtotal += flight.EconomyPrice;
+                            flightSubtotal += flight.BusinessPrice;
+
+                        }
+                    </tbody>
+                </table>
+                <!-- Display Flight subtotal -->
+                <p><strong>Flight Subtotal:</strong> $@flightSubtotal.ToString("0.00")</p>
+            }
+            else
+            {
+                <p>No Flights in your cart yet!</p>
+            }
+        </div>
+        <div class="col-md-12">
+            @if (Model.Hotels.Any())
+            {
+                <h4>My Hotels</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-brands fa-galactic-senate"></i> Name</th>
+                            <th><i class="fa-solid fa-location-dot"></i> Address</th>
+                            <th><i class="fa-solid fa-money-bill"></i> Price</th>
+                            <th><i class="fa-regular fa-star"></i> Rating</th>
+                            <th><i class="fa-brands fa-artstation"></i> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var hotel in Model.Hotels)
+                        {
+                            <tr>
+                                <td>@hotel.Name</td>
+                                <td>@hotel.Address</td>
+                                <td>$@hotel.Price.ToString()</td>
+                                <td>@hotel.Rating</td>
+                                <td>
+                                    <form method="post" asp-action="RemoveHotelFromCart" asp-route-hotelsId="@hotel.HotelsId">
+                                        <button type="submit" class="btn btn-info" onclick="showNotification('Hotel removed successfully!')">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            hotelSubtotal += hotel?.Price ?? 0;
+                        }
+                    </tbody>
+                </table>
+                <!-- Display Hotel subtotal -->
+                <p><strong>Hotel Subtotal:</strong> $@hotelSubtotal.ToString("0.00")</p>
+            }
+            else
+            {
+                <p>No Hotels in your cart yet!</p>
+            }
+        </div>
+        <div class="col-md-12">
+            @if (Model.Cars.Any())
+            {
+                <h4>My Rentals</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-car"></i> Car Model</th>
+                            <th><i class="fa-solid fa-building"></i> Rental Company</th>
+                            <th><i class="fa-regular fa-money-bill-1"></i> Price Per Day</th>
+                            <th><i class="fa-regular fa-money-bill-1"></i> Total Price</th>
+                            <th><i class="fa-brands fa-artstation"></i> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var rental in Model.Cars)
+                        {
+                            var totalDays = (rental.AvailabilityEndDate - rental.AvailabilityStartDate).TotalDays;
+
+                            totalDays = Math.Max(totalDays, 0);
+
+                            var totalPrice = (float)totalDays * rental.Price;
+
+                            <tr>
+                                <td>@rental.Model</td>
+                                <td>@rental.RentalCompany</td>
+                                <td>$@rental.Price.ToString("0.00") / day</td>
+                                <td>$@totalPrice.ToString("0.00")</td>
+                                <td>
+                                    <form method="post" asp-action="RemoveRentalFromCart" asp-route-carid="@rental.CarId">
+                                        <button type="submit" class="btn btn-info" onclick="showNotification('Rental removed successfully!')">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            rentalSubtotal += totalPrice;
+                        }
+                    </tbody>
+                </table>
+                <!-- Display Rental subtotal -->
+                <p><strong>Car Rental Subtotal:</strong> $@rentalSubtotal.ToString("0.00")</p>
+            }
+            else
+            {
+                <p>No Rentals in your cart yet!</p>
+            }
+        </div>
+    </div>
+
+    <!-- Grand Total section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            @{
+                float grandTotal = hotelSubtotal + flightSubtotal + rentalSubtotal;
+            }
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Grand Total</h4>
+                    <p>Total: $@grandTotal.ToString("0.00")</p>
+                    <a href="https://youtu.be/dQw4w9WgXcQ?si=QUE87PFCK-EFAlxY" class="btn btn-primary">Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>No items in your cart yet!</p>
+}
+
+
+

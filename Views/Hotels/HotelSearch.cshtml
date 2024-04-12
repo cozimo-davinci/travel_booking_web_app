@@ -1,0 +1,60 @@
+﻿<link rel="stylesheet" href="~/css/HotelsIndex.css" />
+@model List<Hotels>
+@{
+    ViewData["Title"] = "Search Result";
+    bool searchPerformed = ViewData["SearchPerformed"] as bool? ?? false;
+    string searchString = ViewData["SearchString"] as string;
+}
+
+<h1 class="text-lg-center">Search Results</h1>
+
+<form class="d-flex" asp-controller="Hotels" asp-action="HotelSearch" method="get" id="search">
+    <input class="form-control" type="text" placeholder="Search" name="searchString" />
+    &nbsp;
+    <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-brain"></i> Search</button>
+
+</form>
+<br />
+
+if (Model.Any())
+{
+<div class="card-container">
+    @foreach (var hotel in Model)
+    {
+        <div class="card">
+            <div class="card-content">
+                <img class="card-img-top" src="@Url.Content(hotel.ImagePath)" alt="@hotel.Name" style="object-fit: cover; height: 225px; margin-bottom: 1em;" />
+                <h3> <i class="fa-brands fa-galactic-senate"></i> @hotel.Name</h3>
+                <p> <i class="fa-regular fa-address-card"></i> @hotel.Description</p>
+                <p> <i class="fa-solid fa-umbrella-beach"></i> Type: @hotel.Type</p>
+                <p><i class="fa-solid fa-location-dot"></i> Address: @hotel.Address</p>
+                <p> <i class="fa-regular fa-star"></i> Rating: @hotel.Rating</p>
+                <p> <i class="fa-solid fa-money-bill"></i> Price: $@hotel.Price</p>
+                <p> <i class="fa-regular fa-calendar"></i> Start Date: @hotel.AvailabilityStartDate</p>
+                <p> <i class="fa-regular fa-calendar"></i> End Date: @hotel.AvailabilityEndDate</p>
+            </div>
+            <div class="card-actions">
+                <a asp-action="Details" asp-route-id="@hotel.HotelsId" class="btn btn-info">Details</a>
+                <a asp-action="Edit" asp-route-id="@hotel.HotelsId" class="btn btn-outline-warning">Edit</a>
+                <a asp-action="Delete" asp-route-id="@hotel.HotelsId" class="btn btn-outline-danger">Delete</a>
+            </div>
+        </div>
+    }
+</div>
+
+&nbsp;
+
+<a asp-controller="Hotels" asp-action="Index" class="btn btn-outline-dark" style="margin-top: 2em">Bach to Home Page</a>
+}
+else
+{
+     if (searchPerformed)
+    {
+<p> <storng>No Hotels with the name or description "@searchString" were found</storng></p>
+    }
+    else
+    {
+<p> <strong>No Hotels available</strong></p>
+    }
+}
+

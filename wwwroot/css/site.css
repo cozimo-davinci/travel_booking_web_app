@@ -1,0 +1,56 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background: linear-gradient(to bottom, #E9F1FA, #FFFFFF);
+    /*background-color: bisque;*/
+}
+
+.footerText {
+    text-align: center;
+}
+
+#navBar {
+    /*background: linear-gradient(to bottom, #E9F1FA, #FFFFFF);*/
+}
+
+.nav-item{
+    color: royalblue;
+}
+
+#logo{
+    color:azure;
+}
+
+#logo:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        background-color: darkcyan;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+.nav-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: darkcyan;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}  

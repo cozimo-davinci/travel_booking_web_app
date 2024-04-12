@@ -1,0 +1,75 @@
+﻿
+<link rel="stylesheet" href="~/css/HotelsIndex.css" />
+@model List<Hotels>
+
+@{
+    ViewData["Title"] = "List of Hotels";
+    bool searchPerformed = ViewData["SearchPerformed"] as bool? ?? false;
+    string searchString = ViewData["SearchString"] as string;
+}
+
+
+<form class="d-flex" asp-controller="Hotels" asp-action="Search" method="get" id="search">
+    <input class="form-control me-2" type="search" placeholder="Hotel Name" name="searchString" value="@ViewData["SearchString"]" />
+
+    <button class="btn btn-outline-success" type="submit"><i class="fa-solid fa-book-journal-whills"></i> Search</button>
+</form>
+
+<br />
+<h1>Hotels</h1>
+@if (TempData["Notification"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Notification"]
+    </div>
+}
+
+<a asp-action="Create" class="btn btn-outline-primary" id="createButton">Add a Hotel</a>
+
+@if (Model.Any())
+{
+    <div class="card-container">
+        @foreach (var hotel in Model)
+        {
+            <div class="card">
+                <div class="card-content">
+                    <img class="card-img-top" src="@Url.Content(hotel.ImagePath)" alt="@hotel.Name" style="object-fit: cover; height: 225px; margin-bottom: 1em;" />
+                    <h3> <i class="fa-brands fa-galactic-senate"></i> @hotel.Name</h3>
+                    <p> <i class="fa-regular fa-address-card"></i> @hotel.Description</p>
+                    <p> <i class="fa-solid fa-umbrella-beach"></i> Type: @hotel.Type</p>
+                    <p><i class="fa-solid fa-location-dot"></i> Address: @hotel.Address</p>
+                    <p> <i class="fa-regular fa-star"></i> Rating: @hotel.Rating</p>
+                    <p> <i class="fa-solid fa-money-bill"></i> Price: $@hotel.Price</p>
+                    <p> <i class="fa-regular fa-calendar"></i> Start Date: @hotel.AvailabilityStartDate</p>
+                    <p> <i class="fa-regular fa-calendar"></i> End Date: @hotel.AvailabilityEndDate</p>
+                </div>
+                <div class="card-actions">
+                    <a asp-controller="Cart" asp-action="AddHotelToCart" asp-route-id="@hotel.HotelsId" class="btn btn-outline-primary">Book</a>
+                    <a asp-action="Details" asp-route-id="@hotel.HotelsId" class="btn btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@hotel.HotelsId" class="btn btn-outline-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@hotel.HotelsId" class="btn btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        @if (!Model.Any())
+        {
+            if (searchPerformed)
+            {
+                <div class="alert alert-warning" role="alert">
+                    No Hotel found".
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    No Hotel Available.
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,102 @@
+﻿@model Flights
+@{
+    ViewData["Title"] = "Create Flights";
+}
+
+<h2>Create Flight</h2>
+
+<form asp-action="Create" method="POST">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-control">
+        <label asp-for="Airline" class="control-label"></label>
+        <input asp-for="Airline" class="form-control" />
+        <span asp-validation-for="Airline" class="text-danger"></span>
+
+        <label asp-for="FlightCode" class="control-label"></label>
+        <input asp-for="FlightCode" class="form-control" />
+        <span asp-validation-for="FlightCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-control">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label asp-for="Origin" class="control-label"></label>
+                    <input asp-for="Origin" class="form-control" />
+                    <span asp-validation-for="Origin" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="DepartureTime" class="control-label"></label>
+                    <input asp-for="DepartureTime" class="form-control" />
+                    <span asp-validation-for="DepartureTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label asp-for="Destination" class="control-label"></label>
+                    <input asp-for="Destination" class="form-control" />
+                    <span asp-validation-for="Destination" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="ArrivalTime" class="control-label"></label>
+                    <input asp-for="ArrivalTime" class="form-control" />
+                    <span asp-validation-for="ArrivalTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <label asp-for="TotalFlightTime" class="control-label"></label>
+            <input asp-for="TotalFlightTime" type="number" class="form-control" />
+            <span asp-validation-for="TotalFlightTime" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-control">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <label asp-for="MaxPassengersTotal" class="control-label"></label>
+                    <input asp-for="MaxPassengersTotal" type="number" class="form-control" />
+                    <span asp-validation-for="MaxPassengersTotal" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="MaxPassengersEconomy" class="control-label"></label>
+                    <input asp-for="MaxPassengersEconomy" type="number" class="form-control" />
+                    <span asp-validation-for="MaxPassengersEconomy" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="EconomyPrice" class="control-label"></label>
+                    <input asp-for="EconomyPrice" type="number" class="form-control" />
+                    <span asp-validation-for="EconomyPrice" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="MaxPassengersBusiness" class="control-label"></label>
+                    <input asp-for="MaxPassengersBusiness" type="number" class="form-control" />
+                    <span asp-validation-for="MaxPassengersBusiness" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <label asp-for="BusinessPrice" class="control-label"></label>
+                    <input asp-for="BusinessPrice" type="number" class="form-control" />
+                    <span asp-validation-for="BusinessPrice" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-control">
+        <input type="submit" value="Create" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-warning">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");  
+    }
+}﻿

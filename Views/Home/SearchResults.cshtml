@@ -1,0 +1,145 @@
+﻿@model Search
+@{
+    ViewData["Title"] = "Search Results";
+    string query = ViewData["SearchQuery"] as string ?? "";
+    string filter = ViewData["SearchFilter"] as string ?? "All";
+}
+
+<link rel="stylesheet" href="~/css/CarIndex.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="~/css/loaderStyling.css" />
+
+<div class="container mt-4">
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <h2>Search Results</h2>
+            <form class="d-flex" asp-action="Search" id="search-form">
+                <input class="form-control me-2" type="search" placeholder="Search" name="query" value="@query" />
+                <select class="form-control me-2" name="filter">
+                    <option value="All">All</option>
+                    <option value="Flights">Flights</option>
+                    <option value="Hotels">Hotels</option>
+                    <option value="CarRentals">Car Rentals</option>
+                </select>
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+   
+
+<div id="search-container">
+    <div id="search-results">
+                @if (Model.Flights.Any() && (filter == "All" || filter == "Flights"))
+                {
+                    <div class="row">
+                        <div class="col-md-12"><h3>Flights</h3></div>
+                        @foreach (var flight in Model.Flights)
+                        {
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-body">
+                                        <p class="card-text"> <i class="fa-solid fa-jet-fighter-up"></i> <strong>Airline:</strong> @flight.Airline</p>
+                                        <p class="card-text"> <i class="fa-solid fa-torii-gate"></i> <strong>Origin:</strong> @flight.Origin</p>
+                                        <p class="card-text"> <i class="fa-solid fa-map-pin"></i> <strong>Destination:</strong> @flight.Destination</p>
+                                        <p class="card-text"> <i class="fa-solid fa-clock"></i> <strong>Flight Time:</strong> @flight.TotalFlightTime h</p>
+                                        <p class="card-text"> <i class="fa-regular fa-money-bill-1"></i> <strong>Economy Class Price:</strong> $@flight.EconomyPrice</p>
+                                        <p class="card-text"> <i class="fa-regular fa-money-bill-1"></i> <strong>Business Class Price:</strong> $@flight.BusinessPrice</p>
+                                        <p class="card-text"> <i class="fa-solid fa-plane-departure"></i> <strong>Departure Time:</strong> @flight.DepartureTime</p>
+                                        <p class="card-text"> <i class="fa-solid fa-plane-arrival"></i> <strong>Arrival Time:</strong> @flight.ArrivalTime</p>
+                                        <p class="card-text"> <i class="fa-solid fa-barcode"></i> <strong>Flight Code:</strong> @flight.FlightCode</p>
+
+                                    </div>
+                                    <div class="card-actions">
+                                        <a asp-controller="Cart" asp-action="AddFlightToCart" asp-route-id="@flight.FlightId" class="btn btn-info">Book</a>
+                                        <a asp-controller="Flights" asp-action="Details" asp-route-id="@flight.FlightId" class="btn btn-info">Details</a>
+                                        <a asp-controller="Flights" asp-action="Edit" asp-route-id="@flight.FlightId" class="btn btn-outline-warning">Edit</a>
+                                        <a asp-controller="Flights" asp-action="Delete" asp-route-id="@flight.FlightId" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (Model.Hotels.Any() && (filter == "All" || filter == "Hotels"))
+                {
+                    <div class="row">
+                        <div class="col-md-12"><h3>Hotels</h3></div>
+                        @foreach (var hotel in Model.Hotels)
+                        {
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-body">
+                                        <img class="card-img-top" src="@Url.Content(hotel.ImagePath)" alt="@hotel.Name" style="object-fit: cover; height: 225px; margin-bottom: 1em;" />
+                                        <p class="card-text"> <i class="fa-brands fa-galactic-senate"></i> <strong>Name:</strong> @hotel.Name</p>
+                                        <p class="card-text"> <i class="fa-regular fa-address-card"></i> <strong>Description</strong> @hotel.Description</p>
+                                        <p class="card-text"> <i class="fa-solid fa-umbrella-beach"></i> <strong>Type:</strong> @hotel.Type</p>
+                                        <p class="card-text"><i class="fa-solid fa-location-dot"></i> <strong>Address:</strong> @hotel.Address</p>
+                                        <p class="card-text"> <i class="fa-regular fa-star"></i> <strong>Rating:</strong> @hotel.Rating</p>
+                                        <p class="card-text"> <i class="fa-solid fa-money-bill"></i> <strong>Price:</strong> $@hotel.Price</p>
+                                        <p class="card-text"> <i class="fa-regular fa-calendar"></i> <strong>Start Date:</strong> @hotel.AvailabilityStartDate</p>
+                                        <p class="card-text"> <i class="fa-regular fa-calendar"></i> <strong>End Date:</strong> @hotel.AvailabilityEndDate</p>
+                                    </div>
+                                    <div class="card-actions">
+                                        <a asp-controller="Cart" asp-action="AddHotelToCart" asp-route-id="@hotel.HotelsId" class="btn btn-outline-primary">Book</a>
+                                        <a asp-controller="Hotels" asp-action="Details" asp-route-id="@hotel.HotelsId" class="btn btn-info">Details</a>
+                                        <a asp-controller="Hotels" asp-action="Edit" asp-route-id="@hotel.HotelsId" class="btn btn-outline-warning">Edit</a>
+                                        <a asp-controller="Hotels" asp-action="Delete" asp-route-id="@hotel.HotelsId" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (Model.CarRentals.Any() && (filter == "All" || filter == "CarRentals"))
+                {
+                    <div class="row">
+                        <div class="col-md-12"><h3>Car Rentals</h3></div>
+                        @foreach (var car in Model.CarRentals)
+                        {
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <img class="card-img-top" src="@Url.Content(car.ImagePath)" alt="@car.Model" style="object-fit: cover; height: 225px;">
+                                    <div class="card-body text-left">
+                                        <p class="card-text"> <i class="fa-solid fa-car"></i> <strong>Model:</strong> @car.Model</p>
+                                        <p class="card-text"> <i class="fa-solid fa-building"></i> <strong>Rental Company:</strong> @car.RentalCompany</p>
+                                        <p class="card-text"> <i class="fa-regular fa-money-bill-1"></i> <strong>Price:</strong> $@car.Price</p>
+                                        <p class="card-text"> <i class="fa-regular fa-calendar"></i> <strong>Start Date:</strong> @car.AvailabilityStartDate</p>
+                                        <p class="card-text"> <i class="fa-regular fa-calendar"></i> <strong>End Date:</strong> @car.AvailabilityEndDate</p>
+                                    </div>
+                                    <div class="btn-group">
+                                        <a asp-action="AddRentalToCart" asp-controller="Cart" asp-action="Create" asp-route-id="@car.CarId" class="btn btn-info me-1">Book</a>
+                                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.CarId" class="btn btn-info me-1">Details</a>
+                                        <a asp-controller="Cars" asp-action="Edit" asp-route-id="@car.CarId" class="btn btn-outline-warning me-1">Edit</a>
+                                        <a asp-controller="Cars" asp-action="Delete" asp-route-id="@car.CarId" class="btn btn-outline-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                @if (!Model.Flights.Any() && !Model.Hotels.Any() && !Model.CarRentals.Any())
+                {
+                    <div class="alert alert-warning" role="alert">
+                        No results found for "@query".
+                    </div>
+                }
+
+            <div id="loader">
+                <!-- Loader or spinner HTML -->
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+    </div>
+</div>
+
+    
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/search.js"></script>
+}
